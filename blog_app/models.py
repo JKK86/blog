@@ -1,7 +1,8 @@
-from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse
 from django.utils import timezone
+
+from blog import settings
 
 
 class Post(models.Model):
@@ -17,7 +18,8 @@ class Post(models.Model):
     title = models.CharField(max_length=128, verbose_name="Tytuł")
     slug = models.SlugField(max_length=128, unique_for_date=True)
     content = models.TextField(verbose_name="Treść")
-    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='posts', verbose_name="Autor")
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='posts',
+                               verbose_name="Autor")
     published = models.DateTimeField(default=timezone.now, verbose_name="Data publikacji")
     created = models.DateTimeField(auto_now_add=True, verbose_name="Data utworzenia")
     updated = models.DateTimeField(auto_now=True, verbose_name="Data modyfikacji")
