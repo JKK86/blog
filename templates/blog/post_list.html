@@ -9,5 +9,6 @@
         <br/>
     </div>
 {% endfor %}
-
+{#    page_obj jest zwracane przez klasę ListView#}
+{% include 'blog/pagination.html' with page=page_obj %}
 {% endblock %}
