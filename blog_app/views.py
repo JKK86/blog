@@ -1,7 +1,10 @@
 from django.shortcuts import render
 from django.views import View
 
+from blog_app.models import Post, PUBLISHED
 
-class IndexView(View):
+
+class PostListView(View):
     def get(self, request):
-        pass
+        posts = Post.objects.filter(status=PUBLISHED)
+        return render(request, 'blog/post_list.html', {'posts': posts})

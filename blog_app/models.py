@@ -4,11 +4,11 @@ from django.utils import timezone
 
 from blog import settings
 
+DRAFT = "draft"
+PUBLISHED = "published"
+
 
 class Post(models.Model):
-
-    DRAFT = "draft"
-    PUBLISHED = "published"
 
     STATUS_CHOICES = (
         (DRAFT, "roboczy"),
@@ -16,7 +16,7 @@ class Post(models.Model):
     )
 
     title = models.CharField(max_length=128, verbose_name="Tytuł")
-    slug = models.SlugField(max_length=128, unique_for_date=True)
+    slug = models.SlugField(max_length=128, unique_for_date='published')
     content = models.TextField(verbose_name="Treść")
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='posts',
                                verbose_name="Autor")
