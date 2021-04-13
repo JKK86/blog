@@ -8,6 +8,11 @@ DRAFT = "draft"
 PUBLISHED = "published"
 
 
+class PublishedManager(models.Manager):
+    def get_queryset(self):
+        return super(PublishedManager, self).get_queryset().filter(status=PUBLISHED)
+
+
 class Post(models.Model):
 
     STATUS_CHOICES = (
@@ -20,16 +25,19 @@ class Post(models.Model):
     content = models.TextField(verbose_name="Treść")
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='posts',
                                verbose_name="Autor")
-    published = models.DateTimeField(default=timezone.now, verbose_name="Data publikacji")
+    publish = models.DateTimeField(default=timezone.now, verbose_name="Data publikacji")
     created = models.DateTimeField(auto_now_add=True, verbose_name="Data utworzenia")
     updated = models.DateTimeField(auto_now=True, verbose_name="Data modyfikacji")
     status = models.CharField(max_length=16, choices=STATUS_CHOICES)
+
+    objects = models.Manager()
+    published = PublishedManager()
 
     def __str__(self):
         return self.title
 
     def get_absolute_url(self):
-        return reverse('post_detail', args=[self.published, self.slug])
+        return reverse('post_detail', args=[self.publish, self.slug])
 
     class Meta:
-        ordering = ('-published', )
+        ordering = ('-publish', )
