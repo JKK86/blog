@@ -21,5 +21,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     path('', views.PostListView.as_view(), name="posts"),
-    path('<int:year>/<int:month>/<int:day>/<slug:slug>/', views.PostDetailView.as_view(), name="post_detail"),
+    path('<int:year>/<int:month>/<int:day>/<slug:slug>/', views.post_detail, name="post_detail"),
 ]

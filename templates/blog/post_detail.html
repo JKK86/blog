@@ -1,9 +1,32 @@
 {% extends 'blog/base.html' %}
 
 {% block content %}
-        <div class="post">
-            <h2>{{ post.title }}</h2>
-            <p>Opublikowany {{ post.publish }} przez {{ post.author }}</p>
-            {{ post.content | linebreaks }}
-        </div>
+    <div class="post">
+        <h2>{{ post.title }}</h2>
+        <p>Opublikowany {{ post.publish }} przez {{ post.author }}</p>
+        {{ post.content | linebreaks }}
+    </div>
+    <div class="comment">
+        <form action="" method="post">
+            {% csrf_token %}
+            {% if user.is_authenticated %}
+                Komentujesz jako: {{ user.username }}
+            {% else %}
+                {{ form.name.as_p }}
+                {{ form.email.as_p }}
+            {% endif %}
+            {{ form.text }}
+            <input type="submit" value="Opublikuj komentarz">
+        </form>
+    </div>
+    <div>
+        {% if not comments %}<h3>Brak komentarzy</h3>{% else %}
+            <h3>Komentarze ({{ comments | length }}):</h3>
+            {% for comment in comments %}
+                <strong>{{ comment.name }}</strong> {{ comment.created }}
+                <p>{{ comment.text | linebreaks }}</p>
+            {% endfor %}
+        {% endif %}
+        <hr/>
+    </div>
 {% endblock %}

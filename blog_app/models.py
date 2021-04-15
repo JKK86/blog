@@ -49,10 +49,12 @@ class Post(models.Model):
 class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
     text = models.TextField()
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    name = models.CharField(max_length=32)
+    email = models.EmailField(max_length=32)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
-    active = models.BooleanField(default=True)
+    active = models.BooleanField(default=False)
 
     def __str__(self):
         return self.text
