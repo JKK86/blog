@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from blog_app.models import Post, PUBLISHED
+from blog_app.models import Post, PUBLISHED, Comment
 
 
 def publish_post(model_admin, request, query_set):
@@ -21,3 +21,13 @@ class PostAdmin(admin.ModelAdmin):
     actions = [publish_post, ]
     ordering = ['status', '-publish']
     date_hierarchy = 'publish'
+
+
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ['post', 'text', 'user', 'created', 'active']
+    list_filter = ['user']
+    search_fields = ['text']
+    exclude = ['created', 'updated']
+    list_editable = ['active']
+    ordering = ['-created']
