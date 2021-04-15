@@ -21,7 +21,7 @@ class Post(models.Model):
     )
 
     title = models.CharField(max_length=128, verbose_name="Tytuł")
-    slug = models.SlugField(max_length=128, unique_for_date='published')
+    slug = models.SlugField(max_length=128, unique_for_date='publish')
     content = models.TextField(verbose_name="Treść")
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='posts',
                                verbose_name="Autor")
@@ -37,7 +37,7 @@ class Post(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse('post_detail', args=[self.publish, self.slug])
+        return reverse('post_detail', args=[self.publish.year, self.publish.month, self.publish.day, self.slug])
 
     class Meta:
         ordering = ('-publish', )

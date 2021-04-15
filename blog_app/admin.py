@@ -19,5 +19,5 @@ class PostAdmin(admin.ModelAdmin):
     exclude = ['created', 'updated', ]
     list_editable = ['status']
     actions = [publish_post, ]
-    ordering = ['status', 'publish']
+    ordering = ['status', '-publish']
     date_hierarchy = 'publish'
