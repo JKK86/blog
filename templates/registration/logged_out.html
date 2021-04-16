@@ -1,0 +1,9 @@
+{% extends 'blog/base.html' %}
+{% block title %}
+Wylogowywanie
+{% endblock %}
+{% block content %}
+<h1>Wylogowanie</h1>
+    <p>Pomyślne wylogowanie z serwisu</p>
+    <p><a href="{% url 'login' %}">Zaloguj się ponownie</a></p>
+{% endblock %}
