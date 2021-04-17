@@ -1,14 +1,35 @@
 <!doctype html>
+{% load static %}
 <html lang="pl-PL">
 <head>
     <meta charset="UTF-8">
     <title>Blog {% block title %}{% endblock %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <link rel="stylesheet" href="{% static "css/style.css" %}">
 </head>
 <body>
+<div id="header">
+
+</div>
+<div id="subheader">
+    <div class="menu">
+        {% if user.is_authenticated %}
+            <p><a href="">Profil</a></p>
+            <p><a href="{% url 'logout' %}">Wyloguj</a></p>
+            {% else %}
+            <p><a href="{% url 'login' %}">Zaloguj</a></p>
+            <p><a href="">Załóż konto</a></p>
+        {% endif %}
+    </div>
+</div>
+<div id="content">
 {% block content %}
 
 {% endblock %}
+<div id="sidebar">
+
+</div>
+</div>
 </body>
 </html>

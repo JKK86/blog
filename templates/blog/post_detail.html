@@ -1,4 +1,5 @@
 {% extends 'blog/base.html' %}
+{% load static %}
 
 {% block content %}
     <div class="post">
@@ -11,11 +12,16 @@
             {% csrf_token %}
             {% if user.is_authenticated %}
                 Komentujesz jako: {{ user.username }}
+                <p class="disabled">
+                {{ form.name }}
+                {{ form.email }}
+                </p>
             {% else %}
-                {{ form.name.as_p }}
-                {{ form.email.as_p }}
+                {#                Dodaj komentarz:#}
+                <p>{{ form.name.label_tag }}{{ form.name }}</p>
+                <p>{{ form.email.label_tag }}{{ form.email }}</p>
             {% endif %}
-            {{ form.text }}
+            <p>{{ form.text.label_tag }}{{ form.text }}</p>
             <input type="submit" value="Opublikuj komentarz">
         </form>
     </div>

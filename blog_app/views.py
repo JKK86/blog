@@ -35,8 +35,6 @@ def post_detail(request, year, month, day, slug):
             comment.post = post
             if user.is_authenticated:
                 comment.user = user
-                comment.name = user.username
-                comment.email = user.email
                 comment.active = True
             comment.save()
     return render(request, 'blog/post_detail.html', {'post': post, 'form': form, 'comments': comments})
