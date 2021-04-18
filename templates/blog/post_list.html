@@ -1,19 +1,26 @@
 {% extends 'blog/base.html' %}
 
 {% block content %}
+    {% if tag %}
+    <h2>Wpisy oznaczone tagiem {{ tag.name }}</h2>
+    {% endif %}
     {% for post in posts %}
         <div class="post">
             <h2>
                 <a href="{{ post.get_absolute_url }}">
-                {{ post.title }}</a>
+                    {{ post.title }}</a>
             </h2>
             <p>Opublikowany {{ post.publish }} przez {{ post.author }}</p>
             {{ post.content | truncatewords:30 | linebreaks }}
-
+            <p class="tags">Tagi:
+                {% for tag in post.tags.all %}
+                    <a href="{% url 'posts_by_tag' tag.slug %}">{{ tag.name }}</a>
+                {% if not forloop.last %}, {% endif %}
+                {% endfor %}</p>
             <hr/>
             <br/>
         </div>
     {% endfor %}
     {#    page_obj jest zwracane przez klasę ListView#}
-    {% include 'blog/pagination.html' with page=page_obj %}
+    {% include 'blog/pagination.html' with page=posts %}
 {% endblock %}
