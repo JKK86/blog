@@ -44,6 +44,7 @@ class Post(models.Model):
 
     class Meta:
         ordering = ('-publish', )
+        verbose_name_plural = "Posty"
 
 
 class Comment(models.Model):

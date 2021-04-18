@@ -32,7 +32,7 @@ approve_comments.short_description = "Zaakceptuj komentarze"
 
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ['post', 'text', 'user', 'created', 'active']
+    list_display = ['post', 'text', 'user', 'name', 'email', 'created', 'active']
     list_filter = ['user']
     search_fields = ['text']
     exclude = ['created', 'updated']
