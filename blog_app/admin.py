@@ -23,6 +23,13 @@ class PostAdmin(admin.ModelAdmin):
     date_hierarchy = 'publish'
 
 
+def approve_comments(model_admin, request, query_set):
+    query_set.update(active=True)
+
+
+approve_comments.short_description = "Zaakceptuj komentarze"
+
+
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
     list_display = ['post', 'text', 'user', 'created', 'active']
@@ -31,3 +38,4 @@ class CommentAdmin(admin.ModelAdmin):
     exclude = ['created', 'updated']
     list_editable = ['active']
     ordering = ['-created']
+    actions = [approve_comments, ]

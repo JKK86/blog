@@ -24,6 +24,13 @@
             <p>{{ form.text.label_tag }}{{ form.text }}</p>
             <input type="submit" value="Opublikuj komentarz">
         </form>
+        {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message | linebreaks }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
     </div>
     <div>
         {% if not comments %}<h3>Brak komentarzy</h3>{% else %}
