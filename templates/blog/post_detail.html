@@ -7,6 +7,19 @@
         <p>Opublikowany {{ post.publish }} przez {{ post.author }}</p>
         {{ post.content | linebreaks }}
     </div>
+    <p class="tags">Tagi:
+                {% for tag in post.tags.all %}
+                    <a href="{% url 'posts_by_tag' tag.slug %}">{{ tag.name }}</a>
+                {% if not forloop.last %}, {% endif %}
+                {% endfor %}</p>
+    <div class="similar_posts">
+        <h2>Podobne posty, które mogą Cię zainteresować:</h2>
+    {% for post in similar_posts %}
+    <p><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></p>
+        {% empty %}
+        <p>Nie znaleziono podobnych postów</p>
+    {% endfor %}
+    </div>
     <div class="comment">
         <form action="" method="post">
             {% csrf_token %}

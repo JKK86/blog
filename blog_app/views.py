@@ -7,6 +7,7 @@ from django.template.loader import render_to_string
 from django.views import View
 from django.views.generic import ListView, DetailView
 from taggit.models import Tag
+from django.db.models import Count
 
 from blog_app.forms import CommentForm
 from blog_app.models import Post, PUBLISHED, Comment
@@ -51,6 +52,9 @@ def post_detail(request, year, month, day, slug):
                              )
     user = request.user
     comments = post.comments.filter(active=True)
+    tag_ids = post.tags.values_list('id', flat=True)
+    similar_posts = Post.published.filter(tags__id__in=tag_ids).exclude(id=post.id)
+    similar_posts = similar_posts.annotate(same_tags=Count('tags')).order_by('-same_tags', '-publish')[:3]
     if request.method == 'GET':
         if user.is_authenticated:
             form = CommentForm(initial={'name': user.username, 'email': user.email})
@@ -78,4 +82,7 @@ def post_detail(request, year, month, day, slug):
                 email_to = [user.email for user in User.objects.filter(is_staff=True)]
                 send_mail(subject, message, email_from, email_to, fail_silently=False)
             comment.save()
-    return render(request, 'blog/post_detail.html', {'post': post, 'form': form, 'comments': comments})
+    return render(request, 'blog/post_detail.html', {'post': post,
+                                                     'form': form,
+                                                     'similar_posts': similar_posts,
+                                                     'comments': comments})
