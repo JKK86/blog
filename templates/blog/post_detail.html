@@ -12,6 +12,7 @@
                     <a href="{% url 'posts_by_tag' tag.slug %}">{{ tag.name }}</a>
                 {% if not forloop.last %}, {% endif %}
                 {% endfor %}</p>
+    <p class="post-share"><a href="{% url 'post_share' post.id %}">Udostępnij post</a></p>
     <div class="similar_posts">
         <h2>Podobne posty, które mogą Cię zainteresować:</h2>
     {% for post in similar_posts %}

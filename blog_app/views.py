@@ -9,7 +9,7 @@ from django.views.generic import ListView, DetailView
 from taggit.models import Tag
 from django.db.models import Count
 
-from blog_app.forms import CommentForm
+from blog_app.forms import CommentForm, PostShareForm
 from blog_app.models import Post, PUBLISHED, Comment
 
 User = get_user_model()
@@ -86,3 +86,27 @@ def post_detail(request, year, month, day, slug):
                                                      'form': form,
                                                      'similar_posts': similar_posts,
                                                      'comments': comments})
+
+
+class PostShareView(View):
+    def get(self, request, post_id):
+        post = get_object_or_404(Post,pk=post_id)
+        form = PostShareForm()
+        sent = False
+        return render(request, 'blog/post_share.html', {'post': post,'form': form, 'sent': sent})
+
+    def post(self, request, post_id):
+        post = get_object_or_404(Post, pk=post_id)
+        form = PostShareForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            comment = form.cleaned_data['comment']
+            post_url = request.build_absolute_uri(post.get_absolute_url())
+            subject = f"{name} poleca post {post.title}"
+            message = f"Zachęcam do  przeczytania posta {post.title} na stronie {post_url} \nKomentarz od {name}: " \
+                      f"{comment}"
+            email_from = form.cleaned_data['email_from']
+            email_to = form.cleaned_data['email_to']
+            send_mail(subject, message, email_from, [email_to])
+            sent = True
+            return render(request, 'blog/post_share.html', {'post': post,'form': form, 'sent': sent})
