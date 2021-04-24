@@ -1,5 +1,6 @@
 body {
     margin: 0 250px;
+    background-color: antiquewhite;
 }
 
 #header {
@@ -21,6 +22,7 @@ body {
     font-weight: bold;
     text-decoration: none;
     color: black;
+    padding: 10px 10px;
 }
 
 .disabled {

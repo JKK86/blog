@@ -10,10 +10,11 @@
 </head>
 <body>
 <div id="header">
-
+<h1>Mój Blog</h1>
 </div>
 <div id="subheader">
     <div class="menu">
+        <a href="{% url 'posts' %}">Strona główna</a>
         {% if user.is_authenticated %}
             <a href="">Profil</a>
             <a href="{% url 'logout' %}">Wyloguj</a>
