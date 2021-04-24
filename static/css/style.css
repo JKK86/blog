@@ -25,6 +25,23 @@ body {
     padding: 10px 10px;
 }
 
+#main {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+#content {
+    background: #fff;
+    padding: 20px;
+}
+
+#sidebar {
+    flex: 0 0 200px;
+    background: darkgray;
+    padding: 20px;
+}
+
 .disabled {
     display: none;
 }
