@@ -1,4 +1,5 @@
 {% extends 'blog/base.html' %}
+{% load blog_tags %}
 
 {% block content %}
     {% if tag %}
@@ -12,7 +13,8 @@
             </h2>
             <p>Opublikowany {{ post.publish }} przez {{ post.author }}</p>
 {#            {{ post.content | truncatewords:30 | linebreaks }}#}
-            {{ post.post_preview | linebreaks }}
+{#            {{ post.post_preview | linebreaks }}#}
+            {{ post.post_preview | markdown }}
             <p><a href="{{ post.get_absolute_url }}">Czytaj dalej ...</a></p>
             <p class="tags">Tagi:
                 {% for tag in post.tags.all %}
