@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from django.contrib.sitemaps.views import sitemap
 from blog_app.sitemaps import PostSitemap
+from blog_app.feeds import LatestPostFeed
 from django.urls import path
 from blog_app import views
 
@@ -36,9 +37,10 @@ urlpatterns = [
 
     path('post_share/<int:post_id>', views.PostShareView.as_view(), name='post_share'),
 
+    path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
+    path('feed/', LatestPostFeed(), name='post_feed'),
+
     path('', views.PostListView.as_view(), name="posts"),
     path('<slug:tag_slug>/', views.PostListView.as_view(), name='posts_by_tag'),
     path('<int:year>/<int:month>/<int:day>/<slug:slug>/', views.post_detail, name="post_detail"),
-
-    path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap')
 ]

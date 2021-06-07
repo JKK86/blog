@@ -34,6 +34,7 @@
 <div id="sidebar">
 <h2>To jest mój blog</h2>
     <p>Liczba opublikowanych postów: {% total_posts %} </p>
+    <p><a href="{% url 'post_feed' %}">RSS</a></p>
     <p>Najnowsze posty: {% show_latest_posts %}</p>
     <p>Najczęściej komentowane posty: {% show_most_commented_posts %}</p>
 </div>
