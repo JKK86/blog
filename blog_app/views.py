@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth import get_user_model
+from django.contrib.postgres.search import SearchVector
 from django.core.mail import send_mail
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.shortcuts import render, get_object_or_404
@@ -9,10 +10,11 @@ from django.views.generic import ListView, DetailView
 from taggit.models import Tag
 from django.db.models import Count
 
-from blog_app.forms import CommentForm, PostShareForm
+from blog_app.forms import CommentForm, PostShareForm, SearchForm
 from blog_app.models import Post, PUBLISHED, Comment
 
 User = get_user_model()
+
 
 # Widok oparty na widoku generycznym ListView
 # class PostListView(ListView):
@@ -39,7 +41,7 @@ class PostListView(View):
             posts = paginator.page(paginator.num_pages)
         return render(request, 'blog/post_list.html', {
             'posts': posts, 'tag': tag, 'page': page
-            })
+        })
 
 
 def post_detail(request, year, month, day, slug):
@@ -90,10 +92,10 @@ def post_detail(request, year, month, day, slug):
 
 class PostShareView(View):
     def get(self, request, post_id):
-        post = get_object_or_404(Post,pk=post_id)
+        post = get_object_or_404(Post, pk=post_id)
         form = PostShareForm()
         sent = False
-        return render(request, 'blog/post_share.html', {'post': post,'form': form, 'sent': sent})
+        return render(request, 'blog/post_share.html', {'post': post, 'form': form, 'sent': sent})
 
     def post(self, request, post_id):
         post = get_object_or_404(Post, pk=post_id)
@@ -109,4 +111,17 @@ class PostShareView(View):
             email_to = form.cleaned_data['email_to']
             send_mail(subject, message, email_from, [email_to])
             sent = True
-            return render(request, 'blog/post_share.html', {'post': post,'form': form, 'sent': sent})
+            return render(request, 'blog/post_share.html', {'post': post, 'form': form, 'sent': sent})
+
+
+class PostSearchView(View):
+    def get(self, request):
+        form = SearchForm()
+        query = None
+        results = []
+        if 'query' in request.GET:
+            form = SearchForm(request.GET)
+            if form.is_valid():
+                query = form.cleaned_data['query']
+                results = Post.objects.annotate(search=SearchVector('title', 'content')).filter(search=query)
+        return render(request, 'blog/search.html', {'form': form, 'query': query, 'results': results})

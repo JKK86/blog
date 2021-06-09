@@ -18,3 +18,7 @@ class PostShareForm(forms.Form):
     email_from = forms.EmailField(max_length=64, label="Email")
     email_to = forms.EmailField(max_length=64, label="Do")
     comment = forms.CharField(max_length=255, label="Komentarz", required=False, widget=forms.Textarea)
+
+
+class SearchForm(forms.Form):
+    query = forms.CharField()

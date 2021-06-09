@@ -36,6 +36,7 @@ urlpatterns = [
     path('reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
 
     path('post_share/<int:post_id>', views.PostShareView.as_view(), name='post_share'),
+    path('search/', views.PostSearchView.as_view(), name='post_search'),
 
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
     path('feed/', LatestPostFeed(), name='post_feed'),
