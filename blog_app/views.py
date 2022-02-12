@@ -1,3 +1,4 @@
+from dal import autocomplete
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
@@ -135,3 +136,16 @@ class PostSearchView(View):
                     similarity=TrigramSimilarity('title', query),
                 ).filter(similarity__gt=0.1).order_by('-similarity')
         return render(request, 'blog/search.html', {'form': form, 'query': query, 'results': results})
+
+
+class TagAutocompleteView(autocomplete.Select2QuerySetView):
+    def get_queryset(self):
+        # if not self.request.user.is_authenticated():
+        #     return Tag.objects.none()
+
+        qs = Tag.objects.all()
+
+        if self.q:
+            qs = qs.filter(name__istartswith=self.q)
+
+        return qs

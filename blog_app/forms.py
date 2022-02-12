@@ -1,6 +1,7 @@
 import django.forms as forms
+from dal import autocomplete
 
-from blog_app.models import Comment
+from blog_app.models import Comment, Post
 
 
 class CommentForm(forms.ModelForm):
@@ -22,3 +23,14 @@ class PostShareForm(forms.Form):
 
 class SearchForm(forms.Form):
     query = forms.CharField()
+
+
+class PostForm(autocomplete.FutureModelForm):
+    class Meta:
+        model = Post
+        exclude = ['created', 'updated', ]
+        widgets = {
+            "tags": autocomplete.TaggitSelect2(
+                url="tag_autocomplete"
+            )
+        }

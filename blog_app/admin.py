@@ -1,5 +1,6 @@
 from django.contrib import admin
 
+from blog_app.forms import PostForm
 from blog_app.models import Post, PUBLISHED, Comment
 
 
@@ -12,11 +13,12 @@ publish_post.short_description = "Opublikuj posty"
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
+    form = PostForm
     list_display = ['title', 'slug', 'author', 'publish', 'created', 'updated', 'status']
     list_filter = ['status', 'publish', 'created', 'updated', 'author']
     search_fields = ['title', 'content']
     prepopulated_fields = {'slug': ('title',)}
-    exclude = ['created', 'updated', ]
+    # exclude = ['created', 'updated', ]
     list_editable = ['status']
     actions = [publish_post, ]
     ordering = ['status', '-publish']

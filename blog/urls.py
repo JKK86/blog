@@ -41,6 +41,8 @@ urlpatterns = [
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
     path('feed/', LatestPostFeed(), name='post_feed'),
 
+    path('tag_autocomplete/', views.TagAutocompleteView.as_view(), name='tag_autocomplete'),
+
     path('', views.PostListView.as_view(), name="posts"),
     path('<slug:tag_slug>/', views.PostListView.as_view(), name='posts_by_tag'),
     path('<int:year>/<int:month>/<int:day>/<slug:slug>/', views.post_detail, name="post_detail"),
