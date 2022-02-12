@@ -10,6 +10,17 @@ A complete blogging application with post list, comments, tags and user authenti
 - HTML
 - CSS
 
+## Features:
+- user authorization
+- post list
+- post details
+- post sharing (by email)
+- comments
+- tags
+- sitemap
+- RSS feed
+- full-text search 
+
 ## Setup
 
 First you should clone this repository:
